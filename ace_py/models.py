@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from functools import cached_property
-from typing import Sequence
+from typing import Iterable, Type
 
 from ace_py.constants import (
     NUM_BITS,
@@ -35,16 +35,14 @@ class Card:
 
 @dataclass
 class Hand:
-    cards: Sequence[Card]
-    evaluator: HandEvaluator = None
+    cards: Iterable[Type[Card]]
 
     def __post_init__(self):
         self.cards = sorted(self.cards, key=Card.sort)
         assert len(self.cards) == len(
             set(self.cards)
         ), "All cards in a hand must be unique."
-        if self.evaluator is None:
-            self.evaluator = HandEvaluator(self)
+        self.evaluator = HandEvaluator(self)
 
     def __repr__(self) -> str:
         cards = " ".join(str(card) for card in self.cards)
@@ -86,11 +84,11 @@ class Hand:
         Where a 1 represents that the card rank is in the hand and a 0
         represents that the card rank isn't in the hand.
         """
-        ret = list("0" * NUM_BITS)
+        result = list("0" * NUM_BITS)
         for card in self.cards:
             binary_idx = get_binary_index_from_card_rank(card.rank)
-            ret[binary_idx] = "1"
-        return bit_sequence_to_int(ret)
+            result[binary_idx] = "1"
+        return bit_sequence_to_int(result)
 
     @cached_property
     def card_counts(self) -> int:

@@ -2,7 +2,7 @@ from collections import Counter
 from dataclasses import dataclass
 from functools import reduce
 from operator import ior
-from typing import TYPE_CHECKING, Type, Sequence
+from typing import TYPE_CHECKING, List, Type
 
 from ace_py.constants import (
     BINARY_ARITHMETIC_RESULT_TO_HAND_RANK,
@@ -19,13 +19,13 @@ if TYPE_CHECKING:
 class HandEvaluator:
     hand: Type["Hand"]
 
-    def _get_cards_ordered_by_frequency_and_face_value(self) -> Sequence[Type["Card"]]:
+    def _get_cards_ordered_by_frequency_and_face_value(self) -> List[Type["Card"]]:
         cards = self.hand.cards
         counter = Counter([card.value for card in cards])
         return sorted(cards, key=lambda card: (-counter[card.value], card.value))
 
     def get_hand_rank(self) -> HandRank:
-        modulo_division_result = self.hand.card_counts % NUM_BITS
+        modulo_division_result = self.hand.card_counts % NUM_BITS  # type: ignore
         rank = BINARY_ARITHMETIC_RESULT_TO_HAND_RANK[modulo_division_result]
 
         if rank == HandRank.HIGH_CARD:
@@ -42,6 +42,10 @@ class HandEvaluator:
         return rank
 
     def get_tiebreak_score(self):
+        """
+        In order to break ties, we sort cards by their frequency of occurence
+        and rank, then left shift each card's rank by TIEBREAKER_BITWISE_LEFT_SHIFTS.
+        """
         ordered_cards = self._get_cards_ordered_by_frequency_and_face_value()
 
         left_shifted_bits = [

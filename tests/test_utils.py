@@ -12,7 +12,7 @@ class TestUtils:
 
     def test_bit_sequence_to_int(self):
         assert bit_sequence_to_int("0110") == 6
-        assert bit_sequence_to_int("0110") == 6
+        assert bit_sequence_to_int("0010") == 2
 
     def test_get_binary_index_from_card_rank(self):
         assert get_binary_index_from_card_rank(CardRank.TWO) == 12

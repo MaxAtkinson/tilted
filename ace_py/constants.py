@@ -38,4 +38,4 @@ UNUSED_BITS: Final[int] = NUM_BITS - len(CardRank)
 
 # For ties, we sort the cards then left bit shift
 # each card by the below numbers
-TIEBREAKER_BITWISE_LEFT_SHIFTS: Final[Tuple[int]] = (16, 12, 8, 4, 0)
+TIEBREAKER_BITWISE_LEFT_SHIFTS: Final[Tuple[int, ...]] = (16, 12, 8, 4, 0)
