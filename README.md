@@ -22,6 +22,7 @@ poetry add ace_py
 AcePy can be used to evaluate and compare 5-card poker hands.
 
 ### Hand Comparison
+To compare two hands:
 ```python
 from ace_py import Card, CardRank, CardSuit, Hand
 
@@ -46,7 +47,21 @@ royal_flush > straight_flush  # True
 ```
 
 ### Hand Evaluation
-.
+To evaluate an unknown hand:
+```python
+from ace_py import Card, CardRank, CardSuit, Hand
+
+
+unknown_hand = Hand([
+  Card(CardRank.TEN, CardSuit.SPADES),
+  Card(CardRank.JACK, CardSuit.SPADES),
+  Card(CardRank.QUEEN, CardSuit.SPADES),
+  Card(CardRank.KING, CardSuit.SPADES),
+  Card(CardRank.ACE, CardSuit.SPADES),
+])
+
+unknown_hand.hand_rank  # <HandRank.ROYAL_FLUSH: 10>
+```
 
 ## Roadmap
 - [x] 5-card hand comparison
