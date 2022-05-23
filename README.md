@@ -1,10 +1,22 @@
-<img align="left" src="https://user-images.githubusercontent.com/8881202/169818987-99843287-f2cd-476b-94e3-2333bfc4ae1f.jpeg" width="120" height="120" />
 
 # AcePy
+<img align="left" src="https://user-images.githubusercontent.com/8881202/169818987-99843287-f2cd-476b-94e3-2333bfc4ae1f.jpeg" width="100" height="100" />
+
 AcePy is a lightweight, open-source Python package with a simple interface for poker hand comparison.
 
+<br />
+<br />
+
 ## Installation
-.
+With Pip:
+```sh
+pip install ace_py
+```
+
+With poetry:
+```sh
+poetry add ace_py
+```
 
 ## Basic Usage
 AcePy can be used to evaluate and compare 5-card poker hands.
@@ -37,4 +49,7 @@ royal_flush > straight_flush  # True
 .
 
 ## TODOs
-.
+- [x] 5-card hand comparison
+- [ ] Deck support
+- [ ] Board & dealing (Flop, Turn, River)
+- [ ] Full board & hole card evaluation
