@@ -8,18 +8,35 @@ AcePy is a lightweight, open-source Python package with a simple interface for p
 <br />
 
 ## Installation
-With Pip:
-```sh
-pip install ace_py
-```
-
 With poetry:
 ```sh
 poetry add ace_py
 ```
 
+With Pip:
+```sh
+pip install ace_py
+```
+
 ## Basic Usage
 AcePy can be used to evaluate and compare 5-card poker hands.
+
+### Hand Evaluation
+To evaluate an unknown hand:
+```python
+from ace_py import Card, CardRank, CardSuit, Hand
+
+
+unknown_hand = Hand([
+  Card(CardRank.TEN, CardSuit.SPADES),
+  Card(CardRank.JACK, CardSuit.SPADES),
+  Card(CardRank.QUEEN, CardSuit.SPADES),
+  Card(CardRank.KING, CardSuit.SPADES),
+  Card(CardRank.ACE, CardSuit.SPADES),
+])
+
+unknown_hand.hand_rank  # <HandRank.ROYAL_FLUSH: 10>
+```
 
 ### Hand Comparison
 To compare two hands:
@@ -46,22 +63,6 @@ straight_flush = Hand([
 royal_flush > straight_flush  # True
 ```
 
-### Hand Evaluation
-To evaluate an unknown hand:
-```python
-from ace_py import Card, CardRank, CardSuit, Hand
-
-
-unknown_hand = Hand([
-  Card(CardRank.TEN, CardSuit.SPADES),
-  Card(CardRank.JACK, CardSuit.SPADES),
-  Card(CardRank.QUEEN, CardSuit.SPADES),
-  Card(CardRank.KING, CardSuit.SPADES),
-  Card(CardRank.ACE, CardSuit.SPADES),
-])
-
-unknown_hand.hand_rank  # <HandRank.ROYAL_FLUSH: 10>
-```
 
 ## Roadmap
 - [x] 5-card hand comparison
