@@ -1,8 +1,8 @@
 
-# AcePy
-<img align="left" src="https://user-images.githubusercontent.com/8881202/169818987-99843287-f2cd-476b-94e3-2333bfc4ae1f.jpeg" width="100" height="100" />
+# Tilted
+<img align="left" src="https://user-images.githubusercontent.com/8881202/169894189-c4d64c08-7751-4d0e-a95f-640f07c2e7bd.jpeg" width="100" height="100" />
 
-AcePy is a lightweight, open-source Python package with a simple interface for poker hand comparison.
+Tilted is a lightweight, open-source Python package with a simple interface for poker hand comparison.
 
 <br />
 <br />
@@ -10,21 +10,21 @@ AcePy is a lightweight, open-source Python package with a simple interface for p
 ## Installation
 With Poetry:
 ```sh
-poetry add ace_py
+poetry add tilted
 ```
 
 With Pip:
 ```sh
-pip install ace_py
+pip install tilted
 ```
 
 ## Basic Usage
-AcePy can be used to evaluate and compare 5-card poker hands.
+Tilted can be used to evaluate and compare 5-card poker hands.
 
 ### Hand Evaluation
 To evaluate an unknown hand:
 ```python
-from ace_py import Card, CardRank, CardSuit, Hand
+from tilted import Card, CardRank, CardSuit, Hand
 
 
 unknown_hand = Hand([
@@ -41,7 +41,7 @@ unknown_hand.hand_rank  # <HandRank.ROYAL_FLUSH: 10>
 ### Hand Comparison
 To compare two hands:
 ```python
-from ace_py import Card, CardRank, CardSuit, Hand
+from tilted import Card, CardRank, CardSuit, Hand
 
 
 royal_flush = Hand([
