@@ -1,6 +1,6 @@
 from typing import Dict, Final, Tuple
 
-from ace_py.enums import CardRank, HandRank
+from tilted.enums import CardRank, HandRank
 
 # Hand values based on the binary arithmetic
 # FLUSH & STRAIGHT_FLUSH have no entries here

@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "ace_py"
+name = "tilted"
 version = "0.1.0"
 description = ""
 authors = ["Max Atkinson <hiremaxatkinson@gmail.com>"]

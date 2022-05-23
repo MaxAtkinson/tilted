@@ -1,5 +1,5 @@
-from ace_py.enums import CardRank, CardSuit, HandRank
-from ace_py.models import Card
+from tilted.enums import CardRank, CardSuit, HandRank
+from tilted.models import Card
 
 
 class TestCard:

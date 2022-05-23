@@ -1,5 +1,5 @@
-from ace_py.enums import CardRank
-from ace_py.utils import (
+from tilted.enums import CardRank
+from tilted.utils import (
     bit_sequence_to_int,
     combinations,
     get_binary_index_from_card_rank,

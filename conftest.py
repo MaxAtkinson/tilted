@@ -1,7 +1,7 @@
 import pytest
 
-from ace_py.enums import CardRank, CardSuit
-from ace_py.models import Card, Hand
+from tilted.enums import CardRank, CardSuit
+from tilted.models import Card, Hand
 
 
 @pytest.fixture

@@ -1,7 +1,7 @@
 from typing import Any, Sequence
 
-from ace_py.constants import NUM_BITS, UNUSED_BITS
-from ace_py.enums import CardRank
+from tilted.constants import NUM_BITS, UNUSED_BITS
+from tilted.enums import CardRank
 
 
 def combinations(items: Sequence[Any], n: int):

@@ -2,15 +2,15 @@ from dataclasses import dataclass
 from functools import cached_property
 from typing import Iterable, Type
 
-from ace_py.constants import (
+from tilted.constants import (
     NUM_BITS,
     ROYAL_FLUSH_VALUE,
     STRAIGHT_VALUE,
     WHEEL_STRAIGHT_VALUE,
 )
-from ace_py.enums import CardRank, CardSuit, HandRank
-from ace_py.hand_evaluation import HandEvaluator
-from ace_py.utils import bit_sequence_to_int, get_binary_index_from_card_rank
+from tilted.enums import CardRank, CardSuit, HandRank
+from tilted.hand_evaluation import HandEvaluator
+from tilted.utils import bit_sequence_to_int, get_binary_index_from_card_rank
 
 
 @dataclass(frozen=True)

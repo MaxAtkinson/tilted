@@ -35,5 +35,5 @@ check_imports:
 .PHONY: coverage
 coverage:
 	{ \
-		pytest --cov=ace_py --cov-config=setup.cfg --cov-report=html --cov-report=term ;\
+		pytest --cov=tilted --cov-config=setup.cfg --cov-report=html --cov-report=term ;\
 	}

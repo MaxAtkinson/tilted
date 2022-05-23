@@ -4,15 +4,15 @@ from functools import reduce
 from operator import ior
 from typing import TYPE_CHECKING, List, Type
 
-from ace_py.constants import (
+from tilted.constants import (
     BINARY_ARITHMETIC_RESULT_TO_HAND_RANK,
     NUM_BITS,
     TIEBREAKER_BITWISE_LEFT_SHIFTS,
 )
-from ace_py.enums import HandRank
+from tilted.enums import HandRank
 
 if TYPE_CHECKING:
-    from ace_py.models import Card, Hand
+    from tilted.models import Card, Hand
 
 
 @dataclass
