@@ -8,7 +8,7 @@ AcePy is a lightweight, open-source Python package with a simple interface for p
 <br />
 
 ## Installation
-With poetry:
+With Poetry:
 ```sh
 poetry add ace_py
 ```
