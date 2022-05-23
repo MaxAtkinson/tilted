@@ -2,7 +2,9 @@
 # Tilted
 <img align="left" src="https://user-images.githubusercontent.com/8881202/169894189-c4d64c08-7751-4d0e-a95f-640f07c2e7bd.jpeg" width="100" height="100" />
 
-Tilted is a lightweight, open-source Python package with a simple interface for poker hand comparison.
+Tilted is a lightweight, open-source Python package with a simple interface for poker hand evaluation & comparison.
+
+<img src="https://img.shields.io/github/v/release/MaxAtkinson/tilted" />
 
 <br />
 <br />

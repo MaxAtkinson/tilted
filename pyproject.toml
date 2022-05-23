@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "tilted"
-version = "0.1.0"
-description = ""
+version = "0.1.1"
+description = "Tilted is a lightweight, open-source Python package with a simple interface for poker hand evaluation & comparison."
 authors = ["Max Atkinson <hiremaxatkinson@gmail.com>"]
 
 [tool.black]
