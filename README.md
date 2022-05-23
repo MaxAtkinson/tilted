@@ -48,8 +48,9 @@ royal_flush > straight_flush  # True
 ### Hand Evaluation
 .
 
-## TODOs
+## Roadmap
 - [x] 5-card hand comparison
 - [ ] Deck support
 - [ ] Board & dealing (Flop, Turn, River)
 - [ ] Full board & hole card evaluation
+- [ ] Expand beyond Texas Hold 'Em (Pot Limit Omaha)
