@@ -91,3 +91,4 @@ royal_flush > straight_flush  # True
 
 ### Deployment
 - [x] CI
+- [ ] Coverage badge 
