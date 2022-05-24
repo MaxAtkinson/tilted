@@ -21,7 +21,20 @@ pip install tilted
 ```
 
 ## Basic Usage
-Tilted can be used to evaluate and compare 5-card poker hands.
+Tilted can be used to generate, evaluate and compare 5-card poker hands.
+
+### Hand Generation
+To generate a random hand:
+```python
+from tilted import Deck, Hand
+
+
+deck = Deck()
+unknown_hand = Hand(deck.draw_many(5))
+
+unknown_hand  # <Hand: 8♦ T♠ T♣ Q♣ K♥>
+unknown_hand.hand_rank  # <HandRank.PAIR: 2>
+```
 
 ### Hand Evaluation
 To evaluate an unknown hand:
@@ -67,8 +80,15 @@ royal_flush > straight_flush  # True
 
 
 ## Roadmap
-- [x] 5-card hand comparison
-- [ ] Deck support
+
+### Features
+- [x] Hand evaluation
+- [x] Hand comparison
+- [x] Deck support
 - [ ] Board & dealing (Flop, Turn, River)
 - [ ] Full board & hole card evaluation
 - [ ] Expand beyond Texas Hold 'Em (Pot Limit Omaha)
+
+### Deployment
+- [ ] Release script
+- [ ] CI

@@ -1,11 +1,15 @@
 [tool.poetry]
 name = "tilted"
 version = "0.1.1"
+readme = "README.md"
+license = "Apache-2.0"
+repository = "https://github.com/MaxAtkinson/tilted"
 description = "Tilted is a lightweight, open-source Python package with a simple interface for poker hand evaluation & comparison."
 authors = ["Max Atkinson <hiremaxatkinson@gmail.com>"]
+keywords = ["poker", "hand", "card", "deck", "suit"]
 
 [tool.black]
-exclude = '/(\.eggs|\.git|\.hg|\.mypy_cache|\.nox|\.tox|\.venv|_build|buck-out|build|dist/'
+exclude = '/(\.eggs|\.git|\.hg|\.mypy_cache|\.nox|\.tox|\.venv|_build|buck-out|build|dist)/'
 
 [tool.isort]
 include_trailing_comma = true

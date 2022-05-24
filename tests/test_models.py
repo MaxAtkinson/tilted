@@ -1,5 +1,8 @@
+import pytest
+
 from tilted.enums import CardRank, CardSuit, HandRank
-from tilted.models import Card
+from tilted.exceptions import EmptyDeckException
+from tilted.models import Card, Deck
 
 
 class TestCard:
@@ -182,3 +185,35 @@ class TestHand:
 
     def test_royal_flush_comparison(self, create_royal_flush):
         assert create_royal_flush() == create_royal_flush()
+
+
+class TestDeck:
+    def test_deck_creation(self):
+        deck = Deck()
+        assert len(deck) == 52
+
+    def test_draw(self):
+        deck = Deck()
+        assert isinstance(deck.draw(), Card)
+        assert len(deck) == 51
+
+    def test_draw_many(self):
+        deck = Deck()
+        cards = deck.draw_many(2)
+        assert isinstance(cards, list)
+        assert len(deck) == 50
+        assert isinstance(cards[0], Card)
+        assert isinstance(cards[1], Card)
+
+    def test_burn(self):
+        deck = Deck()
+        card = deck.burn()
+        assert card is None
+        assert len(deck) == 51
+
+    def test_raises_when_deck_empty(self):
+        deck = Deck()
+        with pytest.raises(EmptyDeckException):
+            deck.draw_many(53)
+        with pytest.raises(EmptyDeckException):
+            deck.burn()
