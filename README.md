@@ -90,4 +90,5 @@ royal_flush > straight_flush  # True
 - [ ] Expand beyond Texas Hold 'Em (Pot Limit Omaha)
 
 ### Deployment
-- [ ] CI
+- [x] CI
+- [ ] Coverage badge 
