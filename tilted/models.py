@@ -1,6 +1,7 @@
+import random
 from dataclasses import dataclass
 from functools import cached_property
-from typing import Iterable, Type
+from typing import Iterable, List, Type
 
 from tilted.constants import (
     NUM_BITS,
@@ -9,6 +10,7 @@ from tilted.constants import (
     WHEEL_STRAIGHT_VALUE,
 )
 from tilted.enums import CardRank, CardSuit, HandRank
+from tilted.exceptions import EmptyDeckException
 from tilted.hand_evaluation import HandEvaluator
 from tilted.utils import bit_sequence_to_int, get_binary_index_from_card_rank
 
@@ -38,10 +40,11 @@ class Hand:
     cards: Iterable[Type[Card]]
 
     def __post_init__(self):
-        self.cards = sorted(self.cards, key=Card.sort)
+        assert len(self.cards) == 5, "A poker hand is 5 cards."
         assert len(self.cards) == len(
             set(self.cards)
         ), "All cards in a hand must be unique."
+        self.cards = sorted(self.cards, key=Card.sort)
         self.evaluator = HandEvaluator(self)
 
     def __repr__(self) -> str:
@@ -146,3 +149,31 @@ class Hand:
     @cached_property
     def hand_rank(self) -> HandRank:
         return self.evaluator.get_hand_rank()
+
+
+class Deck:
+    cards: List[Card]
+
+    def __init__(self):
+        self.cards = []
+
+        for suit in CardSuit:
+            for rank in CardRank:
+                self.cards.append(Card(rank, suit))
+
+        random.shuffle(self.cards)
+
+    def __len__(self) -> int:
+        return len(self.cards)
+
+    def draw(self) -> Card:
+        try:
+            return self.cards.pop()
+        except IndexError as ex:
+            raise EmptyDeckException from ex
+
+    def draw_many(self, num_cards: int) -> List[Card]:
+        return [self.draw() for _ in range(num_cards)]
+
+    def burn(self) -> None:
+        self.draw()
