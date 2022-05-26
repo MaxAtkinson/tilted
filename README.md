@@ -4,7 +4,9 @@
 
 Tilted is a lightweight, open-source Python package with a simple interface for poker hand evaluation & comparison.
 
-<img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/MaxAtkinson/4e37448f542c929a49d3cc20fb7b3d67/raw/30b5f30f0876f32100ee73f221f34a62ca70f4d1/coverage.json" /> <img src="https://github.com/MaxAtkinson/tilted/actions/workflows/test-coverage.yml/badge.svg" /> <img src="https://img.shields.io/github/v/release/MaxAtkinson/tilted" />
+![](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/MaxAtkinson/7619cec46699fe0fd901fc40718d52dc/raw/36640b1c7fdfc5715ea0c0d147522ce077e6f6da/test-coverage.json)
+![](https://github.com/MaxAtkinson/tilted/actions/workflows/test-coverage.yml/badge.svg)
+![](https://img.shields.io/github/v/release/MaxAtkinson/tilted)
 
 <br />
 <br />
