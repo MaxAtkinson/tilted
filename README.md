@@ -89,6 +89,7 @@ royal_flush > straight_flush  # True
 - [x] Deck support
 - [ ] Board & dealing (Flop, Turn, River)
 - [ ] Full board & hole card evaluation
+- [ ] Simulations API and/or simulation examples
 - [ ] Expand beyond Texas Hold 'Em (Pot Limit Omaha)
 
 ### Deployment
