@@ -1,8 +1,8 @@
 import pytest
 
-from tilted.enums import CardRank, CardSuit, HandRank
+from tilted.enums import BoardState, CardRank, CardSuit, HandRank
 from tilted.exceptions import EmptyDeckException
-from tilted.models import Card, Deck
+from tilted.models import Board, Card, Deck, Game
 
 
 class TestCard:
@@ -217,3 +217,64 @@ class TestDeck:
             deck.draw_many(53)
         with pytest.raises(EmptyDeckException):
             deck.burn()
+
+
+class TestBoard:
+    def test_repr(self):
+        board = Board(
+            cards=[
+                Card(CardRank.ACE, CardSuit.SPADES),
+                Card(CardRank.ACE, CardSuit.HEARTS),
+                Card(CardRank.ACE, CardSuit.CLUBS),
+            ]
+        )
+        assert repr(board) == "<Board: A♠ A♥ A♣>"
+
+    def test_state(self):
+        board = Board()
+        assert board.state == BoardState.PREFLOP
+
+        board.flop = [
+            Card(CardRank.ACE, CardSuit.SPADES),
+            Card(CardRank.ACE, CardSuit.HEARTS),
+            Card(CardRank.ACE, CardSuit.CLUBS),
+        ]
+        assert board.state == BoardState.FLOP
+
+        board.turn = Card(CardRank.ACE, CardSuit.DIAMIONDS)
+        assert board.state == BoardState.TURN
+
+        board.river = Card(CardRank.KING, CardSuit.HEARTS)
+        assert board.state == BoardState.RIVER
+
+        with pytest.raises(ValueError):
+            board.cards.append(Card(CardRank.KING, CardSuit.DIAMIONDS))
+            board.state
+
+
+class TestGame:
+    def test_game_post_init_inits_with_deck_and_board(self):
+        game = Game()
+        assert isinstance(game.deck, Deck)
+        assert isinstance(game.board, Board)
+
+    def test_game_deals_all_streets_and_raises_when_all_dealt(self):
+        game = Game()
+
+        assert game.board.flop is None
+        game.deal_next_street()
+        assert len(game.board.cards) == 3
+        assert len(game.board.flop) == 3
+
+        assert game.board.turn is None
+        game.deal_next_street()
+        assert len(game.board.cards) == 4
+        assert game.board.turn is not None
+
+        assert game.board.river is None
+        game.deal_next_street()
+        assert len(game.board.cards) == 5
+        assert game.board.river is not None
+
+        with pytest.raises(ValueError):
+            game.deal_next_street()

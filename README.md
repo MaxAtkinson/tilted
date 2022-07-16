@@ -87,11 +87,11 @@ royal_flush > straight_flush  # True
 - [x] Hand evaluation
 - [x] Hand comparison
 - [x] Deck support
-- [ ] Board & dealing (Flop, Turn, River)
+- [x] Board & dealing (Flop, Turn, River)
+- [ ] Player support
 - [ ] Full board & hole card evaluation
 - [ ] Simulations API and/or simulation examples
-- [ ] Expand beyond Texas Hold 'Em (Pot Limit Omaha)
 
 ### Deployment
 - [x] CI
-- [x] Badges 
+- [x] Badges
