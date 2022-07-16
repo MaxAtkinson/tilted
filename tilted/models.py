@@ -1,5 +1,5 @@
 import random
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from functools import cached_property
 from typing import Iterable, List, Type
 
@@ -9,7 +9,7 @@ from tilted.constants import (
     STRAIGHT_VALUE,
     WHEEL_STRAIGHT_VALUE,
 )
-from tilted.enums import CardRank, CardSuit, HandRank
+from tilted.enums import BoardState, CardRank, CardSuit, HandRank
 from tilted.exceptions import EmptyDeckException
 from tilted.hand_evaluation import HandEvaluator
 from tilted.utils import bit_sequence_to_int, get_binary_index_from_card_rank
@@ -31,7 +31,7 @@ class Card:
     def __eq__(self, other):
         return self.rank.value == other.rank.value
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"{CardRank.as_str(self.rank)}{self.suit.value}"
 
 
@@ -177,3 +177,89 @@ class Deck:
 
     def burn(self) -> None:
         self.draw()
+
+
+@dataclass
+class Board:
+    cards: List[Card] = field(default_factory=list)
+
+    @property
+    def state(self):
+        cards_dealt = len(self.cards)
+
+        if cards_dealt == 0:
+            return BoardState.PREFLOP
+        elif cards_dealt == 3:
+            return BoardState.FLOP
+        elif cards_dealt == 4:
+            return BoardState.TURN
+        elif cards_dealt == 5:
+            return BoardState.RIVER
+        else:
+            raise ValueError("Invalid game state")
+
+    @property
+    def flop(self):
+        return self.cards[0:3] if len(self.cards) >= 3 else None
+
+    @flop.setter
+    def flop(self, value: List[Card]):
+        assert len(value) == 3, "The flop is 3 cards."
+        assert len(self.cards) == 0, "The flop is the first street."
+        self.cards.extend(value)
+
+    @property
+    def turn(self):
+        return self.cards[3] if len(self.cards) >= 4 else None
+
+    @turn.setter
+    def turn(self, value: Card):
+        assert len(self.cards) == 3, "The turn is the second street."
+        self.cards.append(value)
+
+    @property
+    def river(self):
+        return self.cards[4] if len(self.cards) >= 5 else None
+
+    @river.setter
+    def river(self, value: Card):
+        assert len(self.cards) == 4, "The river is the third street."
+        self.cards.append(value)
+
+    def __repr__(self) -> str:
+        cards = " ".join([str(card) for card in self.cards])
+        return f"<Board: {cards}>"
+
+
+@dataclass
+class Game:
+    deck: Deck | None = None
+    board: Board | None = None
+
+    def __post_init__(self):
+        self.deck = Deck() if self.deck is None else self.deck
+        self.board = Board() if self.board is None else self.board
+
+    def deal_next_street(self):
+        board_state = self.board.state
+
+        if board_state == BoardState.PREFLOP:
+            self.deal_flop()
+        elif board_state == BoardState.FLOP:
+            self.deal_turn()
+        elif board_state == BoardState.TURN:
+            self.deal_river()
+        else:
+            raise ValueError("No more streets to deal.")
+
+    def deal_flop(self):
+        cards = self.deck.draw_many(3)
+        self.board.flop = cards
+
+    def deal_turn(self):
+        card = self.deck.draw()
+        self.board.turn = card
+
+    def deal_river(self):
+        card = self.deck.draw()
+        self.board.river = card

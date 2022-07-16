@@ -44,3 +44,11 @@ class HandRank(Enum):
     FOUR_OF_A_KIND = 8
     STRAIGHT_FLUSH = 9
     ROYAL_FLUSH = 10
+
+
+@unique
+class BoardState(Enum):
+    PREFLOP = 1
+    FLOP = 2
+    TURN = 3
+    RIVER = 4
