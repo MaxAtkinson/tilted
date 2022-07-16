@@ -80,6 +80,26 @@ straight_flush = Hand([
 royal_flush > straight_flush  # True
 ```
 
+### Game & Dealing
+To create a game and deal cards to the board:
+```python
+from tilted import Game
+
+
+game = Game()
+
+game.deal_next_street()
+game.board.flop  # [A♦, A♠, A♣]
+
+game.deal_next_street()
+game.board.turn  # K♣
+
+game.deal_next_street()
+game.board.river  # Q♣
+
+game.board.cards  # [A♦, A♠, A♣, K♣, Q♣]
+```
+
 
 ## Roadmap
 
