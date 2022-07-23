@@ -316,7 +316,12 @@ class Game:
         then pits all the best hands off against eachother, returning
         the winning player(s).
         """
+        assert self.board.state.value > BoardState.FLOP.value, (
+            "Each player must have a 5-card hand for showdown."
+            " Did you forget to deal the flop?"
+        )
         showdown_hands = []
+
         for player in self.players:
             candidate_hands = self._get_candidate_hands(player)
             showdown_hand = max(candidate_hands)
