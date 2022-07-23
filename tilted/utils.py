@@ -4,12 +4,12 @@ from tilted.constants import NUM_BITS, UNUSED_BITS
 from tilted.enums import CardRank
 
 
-def combinations(items: Sequence[Any], n: int):
+def get_combinations(items: Sequence[Any], n: int):
     if n == 1:
         for x in items:
             yield [x]
     for i in range(len(items)):
-        for x in combinations(items[:i], n - 1):
+        for x in get_combinations(items[:i], n - 1):
             yield [items[i]] + x
 
 

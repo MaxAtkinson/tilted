@@ -1,14 +1,14 @@
 from tilted.enums import CardRank
 from tilted.utils import (
     bit_sequence_to_int,
-    combinations,
     get_binary_index_from_card_rank,
+    get_combinations,
 )
 
 
 class TestUtils:
-    def test_combinations(self):
-        assert len(list(combinations([1, 2, 3, 4, 5, 6, 7], 5))) == 21
+    def test_get_combinations(self):
+        assert len(list(get_combinations([1, 2, 3, 4, 5, 6, 7], 5))) == 21
 
     def test_bit_sequence_to_int(self):
         assert bit_sequence_to_int("0110") == 6

@@ -2,7 +2,7 @@ import pytest
 
 from tilted.enums import BoardState, CardRank, CardSuit, HandRank
 from tilted.exceptions import EmptyDeckException
-from tilted.models import Board, Card, Deck, Game
+from tilted.models import Board, Card, Deck, Game, Player
 
 
 class TestCard:
@@ -26,9 +26,11 @@ class TestHand:
 
     def test_gt(self, create_royal_flush, create_straight_flush):
         assert create_royal_flush() > create_straight_flush()
+        assert create_royal_flush() > None
 
     def test_lt(self, create_royal_flush, create_straight_flush):
         assert create_straight_flush() < create_royal_flush()
+        assert (create_royal_flush() < None) is False
 
     def test_eq(self, create_straight):
         assert create_straight() == create_straight()
@@ -278,3 +280,99 @@ class TestGame:
 
         with pytest.raises(ValueError):
             game.deal_next_street()
+
+    def test_game_deals_all_players_cards(self):
+        game = Game(2)
+        assert all(len(player.hole_cards) == 2 for player in game.players)
+
+    def test_get_winner(self):
+        # P1: AA
+        # P2: 77 *
+        # P3: TT
+        # Board: A89TJ
+        game = Game(3)
+        players = game.players
+
+        players[0].set_hole_cards(
+            (
+                Card(CardRank.ACE, CardSuit.SPADES),
+                Card(CardRank.ACE, CardSuit.CLUBS),
+            )
+        )
+        players[1].set_hole_cards(
+            (
+                Card(CardRank.SEVEN, CardSuit.SPADES),
+                Card(CardRank.SEVEN, CardSuit.CLUBS),
+            )
+        )
+        players[2].set_hole_cards(
+            (
+                Card(CardRank.TEN, CardSuit.SPADES),
+                Card(CardRank.TEN, CardSuit.CLUBS),
+            )
+        )
+
+        game.board.cards = [
+            Card(CardRank.ACE, CardSuit.DIAMIONDS),
+            Card(CardRank.EIGHT, CardSuit.CLUBS),
+            Card(CardRank.NINE, CardSuit.DIAMIONDS),
+            Card(CardRank.TEN, CardSuit.HEARTS),
+            Card(CardRank.JACK, CardSuit.DIAMIONDS),
+        ]
+
+        expected_winner = players[1]
+        actual_winner = game.get_winner()
+        assert actual_winner == [expected_winner]
+
+    def test_get_winner_tied_pot(self):
+        # P1: AA
+        # P2: 77 *
+        # P3: TT
+        # Board: A89TJ
+        game = Game(3)
+        players = game.players
+
+        players[0].set_hole_cards(
+            (
+                Card(CardRank.SEVEN, CardSuit.DIAMIONDS),
+                Card(CardRank.SEVEN, CardSuit.HEARTS),
+            )
+        )
+        players[1].set_hole_cards(
+            (
+                Card(CardRank.SEVEN, CardSuit.SPADES),
+                Card(CardRank.SEVEN, CardSuit.CLUBS),
+            )
+        )
+        players[2].set_hole_cards(
+            (
+                Card(CardRank.TEN, CardSuit.SPADES),
+                Card(CardRank.TEN, CardSuit.CLUBS),
+            )
+        )
+
+        game.board.cards = [
+            Card(CardRank.ACE, CardSuit.DIAMIONDS),
+            Card(CardRank.EIGHT, CardSuit.CLUBS),
+            Card(CardRank.NINE, CardSuit.DIAMIONDS),
+            Card(CardRank.TEN, CardSuit.HEARTS),
+            Card(CardRank.JACK, CardSuit.DIAMIONDS),
+        ]
+
+        expected_winners = [players[0], players[1]]
+        actual_winners = game.get_winner()
+        assert actual_winners == expected_winners
+
+
+class TestPlayer:
+    def test_set_hole_cards(self):
+        deck = Deck()
+        Player("Player #1").set_hole_cards(tuple(deck.draw_many(2)))
+
+    def test_set_hole_cards_raises_if_hole_cards_are_invalid(self):
+        deck = Deck()
+        with pytest.raises(AssertionError):
+            Player("Player #1").set_hole_cards(tuple(deck.draw_many(3)))
+
+    def test_repr(self):
+        assert repr(Player("Player #1")) == "<Player: Player #1>"
