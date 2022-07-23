@@ -81,7 +81,8 @@ royal_flush > straight_flush  # True
 ```
 
 ### Game & Dealing
-To create a game and deal cards to the board:
+To create a game, deal cards to the board and determine the winning player:
+
 ```python
 from tilted import Game
 
