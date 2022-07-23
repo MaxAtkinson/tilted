@@ -80,13 +80,13 @@ straight_flush = Hand([
 royal_flush > straight_flush  # True
 ```
 
-### Game & Dealing
+### Create a game, deal and determine the winner
 To create a game and deal cards to the board:
 ```python
 from tilted import Game
 
 
-game = Game()
+game = Game(2)  # 2 Players
 
 game.deal_next_street()
 game.board.flop  # [A♦, A♠, A♣]
@@ -98,6 +98,8 @@ game.deal_next_street()
 game.board.river  # Q♣
 
 game.board.cards  # [A♦, A♠, A♣, K♣, Q♣]
+
+game.get_winner()  # [Player #1]
 ```
 
 
@@ -108,8 +110,11 @@ game.board.cards  # [A♦, A♠, A♣, K♣, Q♣]
 - [x] Hand comparison
 - [x] Deck support
 - [x] Board & dealing (Flop, Turn, River)
-- [ ] Player support
-- [ ] Full board & hole card evaluation
+- [x] Player support
+- [x] Full board & hole card evaluation
+- [ ] Quick card construction
+- [ ] Buttons & betting
+- [ ] Game state serialization
 - [ ] Simulations API and/or simulation examples
 
 ### Deployment

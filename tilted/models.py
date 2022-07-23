@@ -1,9 +1,10 @@
 import random
 from dataclasses import dataclass, field
 from functools import cached_property
-from typing import Iterable, List, Type
+from typing import Iterable, List, Tuple, Type
 
 from tilted.constants import (
+    MADE_POKER_HAND_SIZE,
     NUM_BITS,
     ROYAL_FLUSH_VALUE,
     STRAIGHT_VALUE,
@@ -12,7 +13,11 @@ from tilted.constants import (
 from tilted.enums import BoardState, CardRank, CardSuit, HandRank
 from tilted.exceptions import EmptyDeckException
 from tilted.hand_evaluation import HandEvaluator
-from tilted.utils import bit_sequence_to_int, get_binary_index_from_card_rank
+from tilted.utils import (
+    bit_sequence_to_int,
+    get_binary_index_from_card_rank,
+    get_combinations,
+)
 
 
 @dataclass(frozen=True)
@@ -36,8 +41,22 @@ class Card:
 
 
 @dataclass
+class Player:
+    name: str
+    hole_cards: Tuple = field(default_factory=tuple)
+
+    def __repr__(self):
+        return f"<Player: {self.name}>"
+
+    def set_hole_cards(self, hole_cards):
+        assert len(hole_cards) == 2, "Texas Hold 'Em is a two hole-card game."
+        self.hole_cards = hole_cards
+
+
+@dataclass
 class Hand:
     cards: Iterable[Type[Card]]
+    player: Player | None = None
 
     def __post_init__(self):
         assert len(self.cards) == 5, "A poker hand is 5 cards."
@@ -52,6 +71,9 @@ class Hand:
         return f"<Hand: {cards}>"
 
     def __gt__(self, other) -> bool:
+        if other is None:
+            return True
+
         is_same_hand_rank = self.evaluator.is_same_hand_rank(other)
         is_better_hand = self.hand_rank.value > other.hand_rank.value
         return (
@@ -61,6 +83,9 @@ class Hand:
         )
 
     def __lt__(self, other) -> bool:
+        if other is None:
+            return False
+
         is_same_hand_rank = self.evaluator.is_same_hand_rank(other)
         is_worse_hand = self.hand_rank.value < other.hand_rank.value
         return (
@@ -70,6 +95,9 @@ class Hand:
         )
 
     def __eq__(self, other) -> bool:
+        if other is None:
+            return False
+
         is_same_hand_rank = self.evaluator.is_same_hand_rank(other)
         return self.evaluator.break_tie(other) is None if is_same_hand_rank else False
 
@@ -233,12 +261,21 @@ class Board:
 
 @dataclass
 class Game:
-    deck: Deck | None = None
-    board: Board | None = None
+    num_players: int = 0
+    deck: Deck = field(default_factory=Deck)
+    board: Board = field(default_factory=Board)
+    players: List[Player] = field(default_factory=list)
 
     def __post_init__(self):
         self.deck = Deck() if self.deck is None else self.deck
         self.board = Board() if self.board is None else self.board
+        self.players = [Player(f"Player #{i + 1}") for i in range(self.num_players)]
+        self.deal_hole_cards()
+
+    def deal_hole_cards(self):
+        for player in self.players:
+            hole_cards = tuple(self.deck.draw_many(2))
+            player.set_hole_cards(hole_cards)
 
     def deal_next_street(self):
         board_state = self.board.state
@@ -263,3 +300,30 @@ class Game:
     def deal_river(self):
         card = self.deck.draw()
         self.board.river = card
+
+    def _get_candidate_hands(self, player: Player) -> List[Hand]:
+        return [
+            Hand(candidate_hand, player)
+            for candidate_hand in get_combinations(
+                list(player.hole_cards) + self.board.cards, MADE_POKER_HAND_SIZE
+            )
+        ]
+
+    def get_winner(self) -> List[Player]:
+        """
+        Gets all combinations of board + hole cards for each player
+        (the candidate hands), selects the best (the showdown hand)
+        then pits all the best hands off against eachother, returning
+        the winning player(s).
+        """
+        showdown_hands = []
+        for player in self.players:
+            candidate_hands = self._get_candidate_hands(player)
+            showdown_hand = max(candidate_hands)
+            showdown_hands.append(showdown_hand)
+
+        best_hand = max(showdown_hands)
+        winning_hands = [hand for hand in showdown_hands if hand == best_hand]
+        return [
+            winning_hand.player for winning_hand in winning_hands if winning_hand.player
+        ]
