@@ -325,7 +325,7 @@ class TestGame:
         assert actual_winner == [expected_winner]
 
     def test_get_winner_tied_pot(self):
-        # P1: AA
+        # P1: 77 *
         # P2: 77 *
         # P3: TT
         # Board: A89TJ

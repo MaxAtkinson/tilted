@@ -267,8 +267,6 @@ class Game:
     players: List[Player] = field(default_factory=list)
 
     def __post_init__(self):
-        self.deck = Deck() if self.deck is None else self.deck
-        self.board = Board() if self.board is None else self.board
         self.players = [Player(f"Player #{i + 1}") for i in range(self.num_players)]
         self.deal_hole_cards()
 
