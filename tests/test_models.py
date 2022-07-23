@@ -324,6 +324,45 @@ class TestGame:
         actual_winner = game.get_winner()
         assert actual_winner == [expected_winner]
 
+    def test_get_winner_tied_pot(self):
+        # P1: AA
+        # P2: 77 *
+        # P3: TT
+        # Board: A89TJ
+        game = Game(3)
+        players = game.players
+
+        players[0].set_hole_cards(
+            (
+                Card(CardRank.SEVEN, CardSuit.DIAMIONDS),
+                Card(CardRank.SEVEN, CardSuit.HEARTS),
+            )
+        )
+        players[1].set_hole_cards(
+            (
+                Card(CardRank.SEVEN, CardSuit.SPADES),
+                Card(CardRank.SEVEN, CardSuit.CLUBS),
+            )
+        )
+        players[2].set_hole_cards(
+            (
+                Card(CardRank.TEN, CardSuit.SPADES),
+                Card(CardRank.TEN, CardSuit.CLUBS),
+            )
+        )
+
+        game.board.cards = [
+            Card(CardRank.ACE, CardSuit.DIAMIONDS),
+            Card(CardRank.EIGHT, CardSuit.CLUBS),
+            Card(CardRank.NINE, CardSuit.DIAMIONDS),
+            Card(CardRank.TEN, CardSuit.HEARTS),
+            Card(CardRank.JACK, CardSuit.DIAMIONDS),
+        ]
+
+        expected_winners = [players[0], players[1]]
+        actual_winners = game.get_winner()
+        assert actual_winners == expected_winners
+
 
 class TestPlayer:
     def test_set_hole_cards(self):
