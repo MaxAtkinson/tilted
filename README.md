@@ -101,8 +101,15 @@ game.board.river  # Q♣
 
 game.board.cards  # [A♦, A♠, A♣, K♣, Q♣]
 
-game.get_winner()  # [Player #1]
+game.players[0].name  # "Player #1"
+game.players[0].hole_cards  # [A♥, K♥]
+game.players[1].name  # "Player #2"
+game.players[1].hole_cards  # [T♦, Q♦]
+
+game.get_winner()  # [<Player: Player #1>]
 ```
+
+NOTE: `get_winner` returns a list to account for split pots (when two players have the winning hand).
 
 
 ## Roadmap
